@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Potential Savings of Remote Workers</title>
+	<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body >    
+		
+	<div class="container" id="app">
+
+		<h1>Calculate Your Potential Cost Savings of Hiring Remote</h1>
+
+
+		<div>Select Your City/Metropolitan Area</div>
+		<div style="margin: 5px 0">
+			<select name="area" rv-on-change="updateListing" rv-value="location">
+				<option rv-each-item="locations" rv-value="item.area_code">{ item.state_and_msa }</option>
+			</select>
+		</div>
+		
+
+		<table class="responsive-table" style="margin-top: 10px">
+			<thead>
+				<tr>
+					<th scope="col">Occupation</th>
+					<th scope="col">Number of Hires per Occupation</th>
+					<th scope="col">Hours per Week</th>
+					<th scope="col">Annual Cost to Hire Locally</th>
+					<th scope="col">Potential Annual Savings of Hiring Remote</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<td colspan="5">NOTE: The wage data represented applies to average employee wages; rates charged by freelancers in these areas may vary.</td>
+				</tr>
+			</tfoot>
+			<tbody>
+				<tr rv-each-item="listing">
+					<th scope="row">{item.occupation}</td>
+					<td data-title="Number of Hires per Occupation"><input type="number" min="0" rv-data-ref="item.occupation_slug" rv-value="item.hires" rv-on-change="updateHires"></td>
+					<td data-title="Hours per Week"><input type="number" rv-data-ref="item.occupation_slug" min="0" rv-value="item.hours" rv-on-change="updateHours"></td>
+					<td data-title="Annual Cost to Hire Locally">{ item | localAnnualCost watch item.hours item.hires | money }</td>
+					<td data-title="Potential Annual Savings of Hiring Remote">{ item | annualSavings watch item.hours item.hires | money }</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/tinybind@1.0.0/dist/tinybind.min.js"></script>
+
+	<script>
+		
+		var data = {
+			listing: [],
+			locations: [],
+			location: null,
+			options: {},
+			updateListing: function() {
+				if (!data.location) {
+					data.listing = [];
+					return;
+				}
+
+				axios.get('data/'+data.location+'.json').then(function(response){
+					for (let i in response.data) {
+						response.data[i].hires = data.options[response.data[i].occupation_slug].hires;
+						response.data[i].hours = data.options[response.data[i].occupation_slug].hours;
+					}
+					data.listing = response.data;
+				});
+			},
+			national_values: {},
+			updateHires: function(e) {
+				var ref = e.target.getAttribute('data-ref');
+				data.options[ref].hires = e.target.value;
+				
+			},
+			updateHours: function(e) {
+				var ref = e.target.getAttribute('data-ref');
+				data.options[ref].hours = e.target.value;
+				
+			}
+		}
+
+		tinybind.formatters.localAnnualCost = function(item){
+	
+			return parseFloat(item.hires * item.hours * item.median_hourly_wage * 51.996).toFixed(2);
+		}
+		tinybind.formatters.annualSavings = function(item){
+			var national_value = data.national_values[item.occupation_slug];
+			var local_cost = tinybind.formatters.localAnnualCost(item);
+			var national_cost = parseFloat(item.hires * item.hours * national_value.average_houlry_median_wage_or_national_hourly_wage * 51.996).toFixed(2);
+			return (local_cost - national_cost).toFixed(2);
+		}
+		tinybind.formatters.money = function(value) {
+			var formatter = new Intl.NumberFormat('en-US', {
+				style: 'currency',
+				currency: 'USD',
+
+				// These options are needed to round to whole numbers if that's what you want.
+				//minimumFractionDigits: 0,
+				//maximumFractionDigits: 0,
+			});
+
+			return formatter.format(value);
+
+		}
+
+		tinybind.bind(document.getElementById('app'), data);
+
+		axios.get('data/national.json').then(function(response){
+			data.national_values = response.data;
+			for (let i in response.data) {
+				data.options[i] = {};
+				data.options[i].hires = 1;
+				data.options[i].hours = 40;
+			}
+		});
+
+		axios.get('data/locations.json').then(function(response){
+			data.locations = response.data;
+			data.location = data.locations[0].area_code;
+			data.updateListing();
+		});
+	</script>
+
+</body>
+</html>

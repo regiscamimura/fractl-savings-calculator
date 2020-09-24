@@ -1,0 +1,119 @@
+[
+	{
+	  "Occupation": "Accounting",
+	  "Average Houlry Median Wage or National Hourly Wage": "$30.03",
+	  "": "",
+	  "Calculated National Cost per Hour": "$30.03",
+	  "Calculated National Cost per Week": "$1,201.32",
+	  "Calculated National Cost per Month": "$5,205.30",
+	  "Calculated National Cost per Year": "$62,463.59"
+	},
+	{
+	  "Occupation": "Customer Service",
+	  "Average Houlry Median Wage or National Hourly Wage": "$15.02",
+	  "": "",
+	  "Calculated National Cost per Hour": "$45.05",
+	  "Calculated National Cost per Week": "$1,802.06",
+	  "Calculated National Cost per Month": "$7,808.32",
+	  "Calculated National Cost per Year": "$93,699.80"
+	},
+	{
+	  "Occupation": "Engineering",
+	  "Average Houlry Median Wage or National Hourly Wage": "$37.86",
+	  "": "",
+	  "Calculated National Cost per Hour": "$37.86",
+	  "Calculated National Cost per Week": "$1,514.26",
+	  "Calculated National Cost per Month": "$6,561.29",
+	  "Calculated National Cost per Year": "$78,735.49"
+	},
+	{
+	  "Occupation": "Graphics & Design",
+	  "Average Houlry Median Wage or National Hourly Wage": "$20.74",
+	  "": "",
+	  "Calculated National Cost per Hour": "$20.74",
+	  "Calculated National Cost per Week": "$829.43",
+	  "Calculated National Cost per Month": "$3,593.90",
+	  "Calculated National Cost per Year": "$43,126.82"
+	},
+	{
+	  "Occupation": "Human Resources",
+	  "Average Houlry Median Wage or National Hourly Wage": "$27.77",
+	  "": "",
+	  "Calculated National Cost per Hour": "$27.77",
+	  "Calculated National Cost per Week": "$1,110.64",
+	  "Calculated National Cost per Month": "$4,812.41",
+	  "Calculated National Cost per Year": "$57,748.90"
+	},
+	{
+	  "Occupation": "Law",
+	  "Average Houlry Median Wage or National Hourly Wage": "$43.54",
+	  "": "",
+	  "Calculated National Cost per Hour": "$43.54",
+	  "Calculated National Cost per Week": "$1,741.71",
+	  "Calculated National Cost per Month": "$7,546.85",
+	  "Calculated National Cost per Year": "$90,562.20"
+	},
+	{
+	  "Occupation": "Management Consulting",
+	  "Average Houlry Median Wage or National Hourly Wage": "$35.22",
+	  "": "",
+	  "Calculated National Cost per Hour": "$0.00",
+	  "Calculated National Cost per Week": "$0.00",
+	  "Calculated National Cost per Month": "$0.00",
+	  "Calculated National Cost per Year": "$0.00"
+	},
+	{
+	  "Occupation": "Marketing",
+	  "Average Houlry Median Wage or National Hourly Wage": "$30.13",
+	  "": "",
+	  "Calculated National Cost per Hour": "$60.26",
+	  "Calculated National Cost per Week": "$2,410.48",
+	  "Calculated National Cost per Month": "$10,444.59",
+	  "Calculated National Cost per Year": "$125,335.08"
+	},
+	{
+	  "Occupation": "Network & System Administration",
+	  "Average Houlry Median Wage or National Hourly Wage": "$33.81",
+	  "": "",
+	  "Calculated National Cost per Hour": "$33.81",
+	  "Calculated National Cost per Week": "$1,352.42",
+	  "Calculated National Cost per Month": "$5,860.03",
+	  "Calculated National Cost per Year": "$70,320.37"
+	},
+	{
+	  "Occupation": "Personal/Virtual Assistant",
+	  "Average Houlry Median Wage or National Hourly Wage": "$16.41",
+	  "": "",
+	  "Calculated National Cost per Hour": "$0.00",
+	  "Calculated National Cost per Week": "$0.00",
+	  "Calculated National Cost per Month": "$0.00",
+	  "Calculated National Cost per Year": "$0.00"
+	},
+	{
+	  "Occupation": "Public Relations",
+	  "Average Houlry Median Wage or National Hourly Wage": "$27.52",
+	  "": "",
+	  "Calculated National Cost per Hour": "$27.52",
+	  "Calculated National Cost per Week": "$1,100.76",
+	  "Calculated National Cost per Month": "$4,769.59",
+	  "Calculated National Cost per Year": "$57,235.11"
+	},
+	{
+	  "Occupation": "Technical Support",
+	  "Average Houlry Median Wage or National Hourly Wage": "$22.00",
+	  "": "",
+	  "Calculated National Cost per Hour": "$44.00",
+	  "Calculated National Cost per Week": "$1,759.85",
+	  "Calculated National Cost per Month": "$7,625.42",
+	  "Calculated National Cost per Year": "$91,505.02"
+	},
+	{
+	  "Occupation": "Web, Mobile, & Software Dev",
+	  "Average Houlry Median Wage or National Hourly Wage": "$38.97",
+	  "": "",
+	  "Calculated National Cost per Hour": "$38.97",
+	  "Calculated National Cost per Week": "$1,558.97",
+	  "Calculated National Cost per Month": "$6,755.03",
+	  "Calculated National Cost per Year": "$81,060.31"
+	}
+  ]
