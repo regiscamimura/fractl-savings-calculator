@@ -15,6 +15,8 @@ foreach ($json as $row) {
 	}
 	$copy['hires'] = 1;
 	$copy['hours'] = 40;
+	$copy['savings'] = 0;
+	$copy['annual_cost'] = 0;
 	$copy['occupation_slug'] = slug($copy['occupation']);
 	$data[$row['Area Code']][] = $copy;
 	$locations[$row['Area Code']] = ['area_code' => $row['Area Code'], 'state_and_msa'=>$row['State and MSA']];

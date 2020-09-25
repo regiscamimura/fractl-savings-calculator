@@ -25,19 +25,29 @@
 					<th scope="col">Occupation</th>
 					<th scope="col">Number of Hires per Occupation</th>
 					<th scope="col">Hours per Week</th>
-					<th scope="col">Annual Cost to Hire Locally</th>
-					<th scope="col">Potential Annual Savings of Hiring Remote</th>
+					<th scope="col" data-type="currency">Annual Cost to Hire Locally</th>
+					<th scope="col" data-type="currency">Potential Annual Savings of Hiring Remote</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr rv-each-item="listing">
 					<th scope="row">{item.occupation}</td>
-					<td data-title="Number of Hires per Occupation"><input type="number" min="0" rv-data-ref="item.occupation_slug" rv-value="item.hires" rv-on-change="updateHires"></td>
-					<td data-title="Hours per Week"><input type="number" rv-data-ref="item.occupation_slug" min="0" rv-value="item.hours" rv-on-change="updateHours"></td>
-					<td data-title="Annual Cost to Hire Locally">{ item | localAnnualCost watch item.hours item.hires | money }</td>
-					<td data-title="Potential Annual Savings of Hiring Remote">{ item | annualSavings watch item.hours item.hires | money }</td>
+					<td data-title="Number of Hires per Occupation"><input type="number" autocomplete="0" min="0" rv-data-ref="item.occupation_slug" rv-value="item.hires" rv-on-change="updateHires"></td>
+					<td data-title="Hours per Week"><input type="number" autocomplete="off" rv-data-ref="item.occupation_slug" min="0" rv-value="item.hours" rv-on-change="updateHours"></td>
+					<td data-type="currency" data-title="Annual Cost to Hire Locally" >{ item | localAnnualCost watch item.hours item.hires | money }</td>
+					<td data-type="currency" data-title="Potential Annual Savings of Hiring Remote" rv-class-positive="item.savings | isPositive" rv-class-negative="item.savings | isNegative">{ item | annualSavings watch item.hours item.hires | money }</td>
 				</tr>
 			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="4">Sum</td>
+					<td data-type="currency" rv-class-positive="savings_sum | isPositive" rv-class-negative="savings_sum | isNegative">{ savingsSum | watch savings_sum | money  }</td>
+				</tr>
+				<tr>
+					<td colspan="4">Percentage Difference</td>
+					<td data-type="currency" rv-class-positive="savings_sum | isPositive" rv-class-negative="savings_sum | isNegative">{ savingsPercentage | watch local_cost_sum  }%</td>
+				</tr>
+			</tfoot>
 		</table>
 
 		<small><em>NOTE: The wage data represented applies to average employee wages; rates charged by freelancers in these areas may vary.</em></small>
@@ -54,6 +64,8 @@
 			locations: [],
 			location: null,
 			options: {},
+			local_cost_sum: 0,
+			savings_sum: 0,
 			updateListing: function() {
 				if (!data.location) {
 					data.listing = [];
@@ -78,18 +90,51 @@
 				var ref = e.target.getAttribute('data-ref');
 				data.options[ref].hours = e.target.value;
 				
+			},
+			savingsSum: function() {
+				var sum = 0;
+				for (const item of data.listing) {
+					sum += parseFloat(item.savings);
+				}
+				data.savings_sum = sum;
+
+				return sum;
+			},
+			savingsPercentage: function() {
+				return ((data.savings_sum/data.local_cost_sum)*100).toFixed(2);
+			},
+			updateLocalCostsSum: function() {
+				var sum = 0;
+				for (const item of data.listing) {
+					sum += parseFloat(item.annual_cost);
+				}
+
+				data.local_cost_sum = sum;
 			}
+			
 		}
 
+		tinybind.formatters.isPositive = function(n){
+			return parseFloat(n) > 0;
+		}
+
+		tinybind.formatters.isNegative = function(n){
+			return parseFloat(n) < 0;
+		}
 		tinybind.formatters.localAnnualCost = function(item){
-	
-			return parseFloat(item.hires * item.hours * item.median_hourly_wage * 51.996).toFixed(2);
+			var cost = parseFloat(item.hires * item.hours * item.median_hourly_wage * 51.996).toFixed(2);
+			item.annual_cost = cost;
+			data.updateLocalCostsSum();
+			return cost;
 		}
 		tinybind.formatters.annualSavings = function(item){
 			var national_value = data.national_values[item.occupation_slug];
 			var local_cost = tinybind.formatters.localAnnualCost(item);
 			var national_cost = parseFloat(item.hires * item.hours * national_value.average_houlry_median_wage_or_national_hourly_wage * 51.996).toFixed(2);
-			return (local_cost - national_cost).toFixed(2);
+			var savings = (local_cost - national_cost).toFixed(2);
+			item.savings = savings;
+			data.savingsSum();
+			return savings;
 		}
 		tinybind.formatters.money = function(value) {
 			var formatter = new Intl.NumberFormat('en-US', {
